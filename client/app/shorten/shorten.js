@@ -4,4 +4,9 @@ angular.module('shortly.shorten', [])
   // Your code here
   $scope.link = {};
   angular.extend($scope, Links);
+
+  $scope.submitLink = function(link) {
+    $scope.addLink(link);
+    $scope.link = '';
+  }
 });

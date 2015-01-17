@@ -5,7 +5,7 @@ angular.module('shortly', [
   'shortly.auth',
   'ngRoute'
 ])
-.config(function($routeProvider, $httpProvider) {
+.config(function($routeProvider, $httpProvider, $locationProvider) {
   $routeProvider
     .when('/signin', {
       templateUrl: 'app/auth/signin.html',
@@ -15,6 +15,18 @@ angular.module('shortly', [
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })
+    // .when('/links/:code', { resolve: {
+    //   redirect: ['$location', function($location) {
+    //     console.log($location.protocol()+ '://' + $location.host() + ':' + $location.port + '/api' + $location.path());
+    //     window.location.replace($location.protocol()+ '://' + $location.host() + ':' + $location.port() + '/api' + $location.path());
+    //   }]
+    // }})
+    .when('/api/links/:code', { resolve: {
+      redirect: ['$location', function($location) {
+        // console.log($location.host());
+        window.location.replace($location.absUrl());
+      }]
+    }})
     .when('/links', {
       templateUrl: 'app/links/links.html',
       controller: 'LinksController'
@@ -23,15 +35,24 @@ angular.module('shortly', [
       templateUrl: 'app/shorten/shorten.html',
       controller: 'ShortenController'
     })
-    .when('/', {
-      templateUrl: 'app/auth/signin.html',
-      controller: 'AuthController'
-    })
+    .otherwise({
+      redirectTo: '/links'
+    });
+
     // Your code here
 
+    // $locationProvider.html5Mode({
+    //   enabled: true,
+    //   requireBase: false
+    // });
     // We add our $httpInterceptor into the array
     // of interceptors. Think of it like middleware for your ajax calls
     $httpProvider.interceptors.push('AttachTokens');
+    $locationProvider.html5Mode({
+      enabled: true,
+      requireBase: true
+    });
+
 })
 .factory('AttachTokens', function ($window) {
   // this is an $httpInterceptor

@@ -1,6 +1,11 @@
 <div id='container'>
-  <h1>LINKAGE</h1>
-  <div ng-repeat="link in data.links | filter:search">
-  {{ link }}
+  <div class="navigation">
+    <ul>
+      <li><a href="/#/links">Links</a></li>
+      <li><a href="/#/shorten">Shorten</a></li>
+    </ul>
+  </div>
+  <div class="link" ng-repeat="link in data.links | filter:search">
+  <a href="/api/links/{{link.code}}">{{link.title}}</a>
   </div>
 </div>
