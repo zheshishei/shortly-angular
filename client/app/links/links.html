@@ -1,11 +1,13 @@
 <div id='container'>
   <div class="navigation">
     <ul>
-      <li><a href="/#/links">Links</a></li>
-      <li><a href="/#/shorten">Shorten</a></li>
+      <li><a ui-sref="links">Links</a></li>
+      <li><a ui-sref="shorten">Shorten</a></li>
+      <li><a ui-sref="logout">logout</a></li>
     </ul>
   </div>
-  <div class="link" ng-repeat="link in data.links | filter:search">
-  <a href="/api/links/{{link.code}}">{{link.title}}</a>
+  <input type="url" ng-model="search.title">
+  <div class="link" ng-repeat="link in data.links | orderBy:'visits':true | filter:search ">
+  <a href="{{link.base_url}}/api/links/{{link.code}}" target="_self">{{link.title}} - {{link.base_url}}/{{link.code}}</a> {{link.visits}}
   </div>
 </div>
